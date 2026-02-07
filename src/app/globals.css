@@ -24,3 +24,58 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@keyframes wavyText {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.wavy {
+  display: inline-flex;
+  flex-wrap: wrap;
+}
+
+.wavy span {
+  display: inline-block;
+  animation: wavyText 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wavy span {
+    animation: none;
+  }
+}
+
+@keyframes heroFadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-title-animate {
+  animation: heroFadeUp 0.9s ease-out both;
+}
+
+.hero-subtitle-animate {
+  animation: heroFadeUp 0.9s ease-out both;
+  animation-delay: 0.2s;
+}
+
+.scrollbar-hidden {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
