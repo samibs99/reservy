@@ -3,9 +3,14 @@
 import React from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { Iconify } from "@/components/iconify";
+import { useBoolean } from "@/hooks";
+import { m, AnimatePresence } from "framer-motion";
+import { varFade } from "@/components/animate";
 
 export default function Header() {
   const pathname = usePathname() || "/";
+  const mobileMenu = useBoolean();
 
   const navLinks = [
     { href: "/coiffeur", label: "Coiffeur" },
@@ -42,15 +47,73 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <Link href="/pro/login" className="px-6 py-2.5 bg-gray-900 text-white rounded-md text-sm font-medium hover:bg-gray-800 whitespace-nowrap">Je suis un professionnel de beauté</Link>
-          <Link href="/pro/login" className="flex items-center gap-2 text-gray-700 hover:text-gray-900">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-            </svg>
-            <span className="text-sm font-medium hidden lg:inline">Mon Compte</span>
+          <Link href="/pro/login" className="hidden lg:flex px-6 py-2.5 bg-gray-900 text-white rounded-md text-sm font-medium hover:bg-gray-800 whitespace-nowrap">
+            Je suis un professionnel de beauté
           </Link>
+          <Link href="/pro/login" className="hidden md:flex items-center gap-2 text-gray-700 hover:text-gray-900">
+            <Iconify icon="mdi:account-circle" width={20} />
+            <span className="text-sm font-medium">Mon Compte</span>
+          </Link>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={mobileMenu.onToggle}
+            className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            aria-label="Toggle menu"
+          >
+            <Iconify icon={mobileMenu.value ? "mdi:close" : "mdi:menu"} width={24} />
+          </button>
         </div>
       </div>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {mobileMenu.value && (
+          <m.div
+            {...varFade().inDown}
+            className="md:hidden bg-white border-t shadow-lg"
+          >
+            <nav className="px-4 py-4 space-y-2">
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href || pathname.startsWith(link.href + "/");
+                return (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    onClick={mobileMenu.onFalse}
+                    className={`flex items-center gap-3 p-3 rounded-lg transition-colors ${
+                      isActive 
+                        ? 'bg-purple-50 text-purple-600 font-semibold' 
+                        : 'hover:bg-gray-50 text-gray-700'
+                    }`}
+                  >
+                    {isActive && <span className="w-2 h-2 rounded-full bg-purple-600" />}
+                    <span>{link.label}</span>
+                  </a>
+                );
+              })}
+              <div className="pt-4 space-y-2">
+                <Link 
+                  href="/pro/login" 
+                  onClick={mobileMenu.onFalse}
+                  className="flex items-center gap-2 p-3 text-gray-700 hover:bg-gray-50 rounded-lg"
+                >
+                  <Iconify icon="mdi:account-circle" width={20} />
+                  Mon Compte
+                </Link>
+                <Link 
+                  href="/pro/login" 
+                  onClick={mobileMenu.onFalse}
+                  className="flex items-center justify-center gap-2 p-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800"
+                >
+                  <Iconify icon="mdi:briefcase" width={20} />
+                  Espace Professionnel
+                </Link>
+              </div>
+            </nav>
+          </m.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

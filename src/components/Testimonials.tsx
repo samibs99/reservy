@@ -1,6 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
+import { Image } from "@/components/image";
+import { Iconify } from "@/components/iconify";
 
 export default function Testimonials() {
   const testimonials = [
@@ -48,27 +50,16 @@ export default function Testimonials() {
     }
   ];
 
-  const handleScroll = (direction: 'up' | 'down') => {
-    const container = document.getElementById('testimonials-container');
-    if (container) {
-      const scrollAmount = 350;
-      if (direction === 'down') {
-        container.scrollBy({ top: scrollAmount, behavior: 'smooth' });
-      } else {
-        container.scrollBy({ top: -scrollAmount, behavior: 'smooth' });
-      }
-    }
-  };
-
   return (
     <section className="py-20 bg-gray-900 text-white relative overflow-hidden">
       {/* Image de fond floue avec overlay sombre */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gray-900/80 z-10"></div>
-        <img 
+        <Image 
           src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=1600" 
           alt="background" 
-          className="w-full h-full object-cover opacity-30"
+          className="w-full h-full opacity-30"
+          visibleByDefault
         />
       </div>
 
@@ -81,8 +72,9 @@ export default function Testimonials() {
             <p className="text-gray-400 mb-8 leading-relaxed text-base">
               Notre objectif est de vous offrir une plateforme de réservation de services de beauté qui vous satisfait pleinement et que vous utilisez au quotidien. C'est pourquoi nous améliorons constamment nos services pour répondre à vos besoins et écoutons attentivement vos retours.
             </p>
-            <button className="text-purple-500 font-semibold hover:text-purple-400 flex items-center gap-2 text-sm">
-              Lire plus <span className="text-lg">→</span>
+            <button className="text-purple-500 font-semibold hover:text-purple-400 flex items-center gap-2 text-sm group">
+              Lire plus 
+              <Iconify icon="mdi:arrow-right" width={20} className="group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
           
@@ -94,22 +86,29 @@ export default function Testimonials() {
             >
               {testimonials.map((testimonial, idx) => (
                 <div key={idx} className="bg-gray-800/70 backdrop-blur-sm p-5 rounded-xl">
-                  <p className="text-4xl text-gray-700 mb-3 leading-none font-serif">"</p>
+                  <Iconify icon="mdi:format-quote-open" width={32} className="text-gray-700 mb-3" />
                   <p className="text-gray-300 mb-4 text-sm leading-relaxed min-h-[80px]">{testimonial.text}</p>
                   <div className="flex text-yellow-400 mb-4 text-base">
                     {[...Array(5)].map((_, i) => (
-                      <span key={i}>{i < testimonial.rating ? "★" : "☆"}</span>
+                      <Iconify 
+                        key={i} 
+                        icon={i < testimonial.rating ? "mdi:star" : "mdi:star-outline"} 
+                        width={18}
+                      />
                     ))}
                   </div>
                   <div className="flex items-center gap-3">
-                    <img 
+                    <Image 
                       src={testimonial.avatar} 
                       alt={testimonial.author}
-                      className="w-11 h-11 rounded-full object-cover"
+                      className="w-11 h-11 rounded-full"
+                      ratio="1/1"
                     />
                     <div>
                       <div className="font-semibold text-white text-sm">{testimonial.author}</div>
-                      <div className="text-xs text-gray-500">{testimonial.date}</div>
+                      <div className="text-xs text-gray-500 flex items-center gap-1">
+                        <Iconify icon="mdi:calendar" width={12} />
+                        {testimonial.date}</div>
                     </div>
                   </div>
                 </div>
@@ -117,7 +116,7 @@ export default function Testimonials() {
             </div>
 
             {/* Indicateur de scroll (optionnel) */}
-            <div className="absolute right-0 top-0 bottom-0 w-1 bg-gray-800 rounded-full overflow-hidden">
+            <div className="absolute right-0 top-0 bottom-0 w-1 bg-gray-800 rounded-full overflow-hidden hidden md:block">
               <div className="w-full h-1/3 bg-gray-600 rounded-full"></div>
             </div>
           </div>

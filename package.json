@@ -9,16 +9,22 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@iconify/react": "^5.0.2",
+    "embla-carousel": "^8.2.0",
+    "embla-carousel-autoplay": "^8.2.0",
+    "embla-carousel-react": "^8.2.0",
     "framer-motion": "^12.31.2",
     "next": "16.1.6",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "react-lazy-load-image-component": "^1.6.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/react-lazy-load-image-component": "^1.6.5",
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
